@@ -1,5 +1,8 @@
+#folders
 venv
 logs
 Notes
+Artifacts
 
+# files
 .env
