@@ -1,6 +1,8 @@
 from heartfailure.components.data_ingestion import DataIngestion
 from heartfailure.components.data_validation import DataValidation
-from heartfailure.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig
+from heartfailure.components.data_transformation import DataTransformation
+
+from heartfailure.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig,DataTransformationConfig
 
 from heartfailure.exception.exception import heartfailureException
 from heartfailure.logging.logger import logging
@@ -24,6 +26,17 @@ if __name__ == "__main__":
         data_validation_artifact = data_validation.initiate_data_validation()
         logging.info("Data Validation Completed ")
         print(data_validation_artifact)
+        
+        
+        data_transformation_config=DataTransformationConfig(trainingpipelineconfig)
+        logging.info(f"Initiate Data transformation")
+        data_transformation = DataTransformation(data_validation_artifact=data_validation_artifact, data_transformation_config=data_transformation_config)
+        data_transdformation_artifact = data_transformation.initiate_data_transformation()
+        logging.info(f"Data transformation completed")
+        print(data_transdformation_artifact)
+        
+        
+        
     
     except Exception as e:
         raise heartfailureException(e,sys)
