@@ -1,8 +1,9 @@
 from heartfailure.components.data_ingestion import DataIngestion
 from heartfailure.components.data_validation import DataValidation
 from heartfailure.components.data_transformation import DataTransformation
+from heartfailure.components.model_trainer import ModelTrainer
 
-from heartfailure.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig,DataTransformationConfig
+from heartfailure.entity.config_entity import DataIngestionConfig, TrainingPipelineConfig, DataValidationConfig,DataTransformationConfig,ModeTrainerConfig
 
 from heartfailure.exception.exception import heartfailureException
 from heartfailure.logging.logger import logging
@@ -31,12 +32,17 @@ if __name__ == "__main__":
         data_transformation_config=DataTransformationConfig(trainingpipelineconfig)
         logging.info(f"Initiate Data transformation")
         data_transformation = DataTransformation(data_validation_artifact=data_validation_artifact, data_transformation_config=data_transformation_config)
-        data_transdformation_artifact = data_transformation.initiate_data_transformation()
+        data_transformation_artifact = data_transformation.initiate_data_transformation()
         logging.info(f"Data transformation completed")
-        print(data_transdformation_artifact)
+        print(data_transformation_artifact)
         
         
-        
+        logging.info("Model Training started ")
+        model_trainer_config = ModeTrainerConfig(training_pipeline_config=trainingpipelineconfig)
+        model_trainer = ModelTrainer(model_trainer_config=model_trainer_config, data_transformation_artifact=data_transformation_artifact)
+        model_trainer_artifact = model_trainer.initiate_model_trainer()
+        logging.info("Model training artifact created")
+        print(model_trainer_artifact)
     
     except Exception as e:
         raise heartfailureException(e,sys)
